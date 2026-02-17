@@ -1,0 +1,188 @@
+{
+  "generated_at": "2026-02-15T16:26:42.914051+00:00",
+  "source_digest": "E:\\VS_workplace\\AI-News-Monitor\\outputs\\digest_20260215_162637.json",
+  "digest_meta": {
+    "analysis_mode": "heuristic_fallback",
+    "model": "heuristic",
+    "fallback_used": true,
+    "fallback_reason": "Expecting ',' delimiter: line 726 column 6 (char 20593)",
+    "top_k": 12,
+    "max_rss_per_source": 10,
+    "github_limit": 10
+  },
+  "llm_provider": "gemini",
+  "llm_model": "gemini-2.0-flash",
+  "github_report_count": 2,
+  "article_report_count": 10,
+  "github_reports": [
+    {
+      "repo_url": "https://github.com/camel-ai/camel",
+      "ok": true,
+      "owner": "camel-ai",
+      "repo": "camel",
+      "stars": 16022,
+      "forks": 1772,
+      "watchers": 120,
+      "open_issues": 445,
+      "last_active_days": 0,
+      "archived": false,
+      "disabled": false,
+      "quality_score": 87.0,
+      "recommendation": "high-priority",
+      "reasons": [
+        "Stars=16022, Forks=1772, Watchers=120",
+        "Last active 0 days ago on branch master",
+        "Open issues high (445)."
+      ],
+      "from_item_title": "camel-ai/camel (GitHub)",
+      "from_source": "GitHub Search",
+      "priority": "P0"
+    },
+    {
+      "repo_url": "https://github.com/huggingface/datasets",
+      "ok": true,
+      "owner": "huggingface",
+      "repo": "datasets",
+      "stars": 21188,
+      "forks": 3096,
+      "watchers": 281,
+      "open_issues": 1065,
+      "last_active_days": 0,
+      "archived": false,
+      "disabled": false,
+      "quality_score": 84.0,
+      "recommendation": "high-priority",
+      "reasons": [
+        "Stars=21188, Forks=3096, Watchers=281",
+        "Last active 0 days ago on branch main",
+        "Open issues high (1065)."
+      ],
+      "from_item_title": "huggingface/datasets (GitHub)",
+      "from_source": "GitHub Search",
+      "priority": "P0"
+    }
+  ],
+  "article_reports": [
+    {
+      "title": "Context Management for Deep Agents",
+      "source": "LangChain Blog",
+      "link": "https://blog.langchain.com/context-management-for-deepagents/",
+      "category": "ai-engineering",
+      "base_score": 80.8,
+      "source_boost": 6,
+      "insight_score": 86.8,
+      "priority": "P0",
+      "recommendation": "track-now",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "DSGym: A holistic framework for evaluating and training data science agents",
+      "source": "Together AI Blog",
+      "link": "https://www.together.ai/blog/dsgym",
+      "category": "ai-engineering",
+      "base_score": 80.8,
+      "source_boost": 4,
+      "insight_score": 84.8,
+      "priority": "P0",
+      "recommendation": "track-now",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "On Agent Frameworks and Agent Observability",
+      "source": "LangChain Blog",
+      "link": "https://blog.langchain.com/on-agent-frameworks-and-agent-observability/",
+      "category": "ai-engineering",
+      "base_score": 70.8,
+      "source_boost": 6,
+      "insight_score": 76.8,
+      "priority": "P1",
+      "recommendation": "watch-this-week",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "Together Evaluations now supports comparing top commercial APIs vs. open source models",
+      "source": "Together AI Blog",
+      "link": "https://www.together.ai/blog/together-evaluations-v2",
+      "category": "ai-engineering",
+      "base_score": 70.8,
+      "source_boost": 4,
+      "insight_score": 74.8,
+      "priority": "P1",
+      "recommendation": "watch-this-week",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "Learn how Cursor partnered with Together AI to deliver real-time, low-latency inference at scale",
+      "source": "Together AI Blog",
+      "link": "https://www.together.ai/blog/learn-how-cursor-partnered-with-together-ai-to-deliver-real-time-low-latency-inference-at-scale",
+      "category": "ai-engineering",
+      "base_score": 70.8,
+      "source_boost": 4,
+      "insight_score": 74.8,
+      "priority": "P1",
+      "recommendation": "watch-this-week",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "OpenAI gpt-oss-safeguard",
+      "source": "Ollama Blog",
+      "link": "https://ollama.com/blog/gpt-oss-safeguard",
+      "category": "ai-engineering",
+      "base_score": 60.6,
+      "source_boost": 4,
+      "insight_score": 64.6,
+      "priority": "P2",
+      "recommendation": "archive",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "MiniMax M2",
+      "source": "Ollama Blog",
+      "link": "https://ollama.com/blog/minimax-m2",
+      "category": "ai-engineering",
+      "base_score": 60.6,
+      "source_boost": 4,
+      "insight_score": 64.6,
+      "priority": "P2",
+      "recommendation": "archive",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "Replicate is joining Cloudflare",
+      "source": "Cloudflare AI Blog",
+      "link": "https://blog.cloudflare.com/replicate-joins-cloudflare/",
+      "category": "ai-engineering",
+      "base_score": 60.6,
+      "source_boost": 4,
+      "insight_score": 64.6,
+      "priority": "P2",
+      "recommendation": "archive",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "Scaling social science research",
+      "source": "OpenAI Blog",
+      "link": "https://openai.com/index/scaling-social-science-research",
+      "category": "ai-engineering",
+      "base_score": 50.5,
+      "source_boost": 6,
+      "insight_score": 56.5,
+      "priority": "P2",
+      "recommendation": "archive",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    },
+    {
+      "title": "Introducing GPT-5.3-Codex-Spark",
+      "source": "OpenAI Blog",
+      "link": "https://openai.com/index/introducing-gpt-5-3-codex-spark",
+      "category": "ai-engineering",
+      "base_score": 50.5,
+      "source_boost": 6,
+      "insight_score": 56.5,
+      "priority": "P2",
+      "recommendation": "archive",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring."
+    }
+  ],
+  "llm_summary": "**执行摘要**\n\n**今日跟进(P0):**\n\n1.  GitHub项目camel-ai/camel活跃度高但问题多，评估其在AI Agent方向的潜力，考虑合作或借鉴。\n2.  Hugging Face datasets库持续活跃且重要，关注其更新，确保数据集兼容性。\n3.  LangChain Blog的\"Context Management for Deep Agents\"文章值得深读，研究上下文管理对Agent性能的影响，优化现有Agent架构。\n\n**本周观察(P1):**\n\n1.  关注LangChain Blog的\"Agent Observability\"文章， 改进Agent可观测性，以便debug和监控。\n2.  Together AI的评估工具支持商业API与开源模型对比，尝试用其评估现有模型，优化选型。\n3.  Together AI与Cursor合作实现低延迟推理，调研类似方案，提升推理性能。\n\n**风险提示:** Agent框架和可观测性技术快速发展，需持续学习，避免技术选型落后。"
+}

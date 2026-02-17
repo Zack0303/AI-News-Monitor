@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI-News-Monitor History</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="hero-left">
+        <h1>Digest History</h1>
+        <p class="muted">Browse previous releases</p>
+      </div>
+      <div class="hero-right">
+        <a class="link-btn" href="./index.html">Today</a>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Mode</th>
+              <th>Model</th>
+              <th>Candidates</th>
+              <th>Selected</th>
+              <th>Top Source</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in history %}
+            <tr>
+              <td>{{ row.date }}</td>
+              <td>{{ row.mode }}</td>
+              <td>{{ row.model }}</td>
+              <td>{{ row.candidates }}</td>
+              <td>{{ row.selected }}</td>
+              <td>{{ row.top_source }}</td>
+              <td><a href="./data/{{ row.filename }}">JSON</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

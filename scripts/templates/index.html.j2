@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI-News-Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="hero-left">
+        <h1>AI-News-Monitor</h1>
+        <p class="muted">Daily AI intelligence brief</p>
+      </div>
+      <div class="hero-right">
+        <a class="link-btn" href="./history.html">History</a>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="stats">
+        <span>Generated: {{ generated_at }}</span>
+        <span>Date: {{ date }}</span>
+        <span>Candidates: {{ candidates }}</span>
+        <span>Selected: {{ selected }}</span>
+      </div>
+      <div class="mode-row">
+        <span class="badge badge-mode">Mode: {{ run_meta.get("analysis_mode", "unknown") }}</span>
+        <span class="badge badge-model">Model: {{ run_meta.get("model", "-") }}</span>
+        <span class="badge badge-fallback">Fallback: {{ run_meta.get("fallback_used", false) }}</span>
+      </div>
+      <div class="source-mix">Source Mix:
+        {% for k, v in source_mix.items() %}
+          <span class="source-pill">{{ k }}: {{ v }}</span>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="toolbar panel">
+      <input id="search-input" class="search" placeholder="Search title / source / summary..." />
+      <label class="check-wrap"><input type="checkbox" id="github-only" /> GitHub only</label>
+      <span class="muted">Visible: <strong id="result-count">{{ items|length }}</strong></span>
+    </section>
+
+    <section id="card-grid" class="card-grid">
+      {% for item in items %}
+      <article
+        class="news-card"
+        data-source="{{ item.get('source', 'unknown') }}"
+        data-tier="{{ item.get('output_tier', 'primary') }}"
+        data-has-github="{{ 'true' if 'github.com' in item.get('link', '') else 'false' }}"
+      >
+        <div class="card-head">
+          <h2>{{ loop.index }}. {{ item.get("title", "Untitled") }}</h2>
+          <span class="badge {{ 'badge-primary' if item.get('output_tier', 'primary') == 'primary' else 'badge-watchlist' }}">
+            {{ item.get("output_tier", "primary").upper() }}
+          </span>
+        </div>
+        <p class="meta">
+          <span>Source: {{ item.get("source", "-") }}</span>
+          <span>Score: {{ item.get("total_score", 0) }}</span>
+          <span>Category: {{ item.get("category", "-") }}</span>
+        </p>
+        <p class="summary">{{ item.get("summary_cn", "") }}</p>
+        <p><a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+      </article>
+      {% endfor %}
+    </section>
+  </main>
+  <script src="./assets/app.js"></script>
+</body>
+</html>

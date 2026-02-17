@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-02-15T07:00:09.756450+00:00",
+  "source_digest": "E:\\VS_workplace\\AI-News-Monitor\\outputs\\digest_20260215_064559.json",
+  "report_count": 2,
+  "reports": [
+    {
+      "repo_url": "https://github.com/camel-ai/camel",
+      "ok": true,
+      "owner": "camel-ai",
+      "repo": "camel",
+      "stars": 16017,
+      "forks": 1770,
+      "watchers": 120,
+      "open_issues": 445,
+      "last_active_days": 0,
+      "archived": false,
+      "disabled": false,
+      "quality_score": 87.0,
+      "recommendation": "high-priority",
+      "reasons": [
+        "Stars=16017, Forks=1770, Watchers=120",
+        "Last active 0 days ago on branch master",
+        "Open issues high (445)."
+      ],
+      "from_item_title": "camel-ai/camel (GitHub)"
+    },
+    {
+      "repo_url": "https://github.com/huggingface/datasets",
+      "ok": true,
+      "owner": "huggingface",
+      "repo": "datasets",
+      "stars": 21186,
+      "forks": 3096,
+      "watchers": 281,
+      "open_issues": 1064,
+      "last_active_days": 0,
+      "archived": false,
+      "disabled": false,
+      "quality_score": 84.0,
+      "recommendation": "high-priority",
+      "reasons": [
+        "Stars=21186, Forks=3096, Watchers=281",
+        "Last active 0 days ago on branch main",
+        "Open issues high (1064)."
+      ],
+      "from_item_title": "huggingface/datasets (GitHub)"
+    }
+  ],
+  "llm_summary": ""
+}

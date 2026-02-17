@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI News Monitor Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070b16;
+      --card: #11182c;
+      --text: #eaf1ff;
+      --muted: #97a9d6;
+      --accent: #00d2a8;
+      --warning: #ffc857;
+      --border: #24345f;
+    }
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: "IBM Plex Sans", Arial, sans-serif;
+      background:
+        radial-gradient(1200px 500px at 5% -10%, #1d325f, transparent 60%),
+        radial-gradient(1000px 400px at 95% 0%, #123537, transparent 50%),
+        var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .header {
+      padding: 18px 22px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(17, 24, 44, 0.88);
+      margin-bottom: 16px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-family: "Space Grotesk", sans-serif;
+      letter-spacing: 0.2px;
+    }
+    .stats {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .mode {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #07131f;
+      background: var(--accent);
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 4px 10px;
+    }
+    .mode.warn {
+      background: var(--warning);
+    }
+    .source-mix {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(17, 24, 44, 0.92);
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+    .card.watchlist {
+      border-color: #4f5f8f;
+      opacity: 0.92;
+    }
+    .card h3 { margin: 0 0 8px 0; }
+    .meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .badge {
+      color: #091528;
+      background: #7bdcff;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      letter-spacing: 0.5px;
+    }
+    .summary { line-height: 1.5; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="header">
+      <h1>AI News Monitor - Daily Digest</h1>
+      <div class="stats">
+        <span>Generated: 2026-02-15T16:26:37.985479+00:00</span>
+        <span>Candidates: 70</span>
+        <span>Selected: 12</span>
+      </div>
+      <div class="mode warn">
+        MODE: heuristic_fallback | MODEL: heuristic | FALLBACK: true
+      </div>
+      <div class="source-mix">Source Mix: Cloudflare AI Blog: 1 | GitHub Search: 2 | LangChain Blog: 2 | Ollama Blog: 2 | OpenAI Blog: 2 | Together AI Blog: 3</div>
+    </section>
+    
+            <article class="card primary">
+              <h3>1. Context Management for Deep Agents</h3>
+              <p class="meta">
+                <span>Source: LangChain Blog</span>
+                <span>Score: 80.8</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://blog.langchain.com/context-management-for-deepagents/" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>2. DSGym: A holistic framework for evaluating and training data science agents</h3>
+              <p class="meta">
+                <span>Source: Together AI Blog</span>
+                <span>Score: 80.8</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>3. On Agent Frameworks and Agent Observability</h3>
+              <p class="meta">
+                <span>Source: LangChain Blog</span>
+                <span>Score: 70.8</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://blog.langchain.com/on-agent-frameworks-and-agent-observability/" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>4. Together Evaluations now supports comparing top commercial APIs vs. open source models</h3>
+              <p class="meta">
+                <span>Source: Together AI Blog</span>
+                <span>Score: 70.8</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://www.together.ai/blog/together-evaluations-v2" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>5. Learn how Cursor partnered with Together AI to deliver real-time, low-latency inference at scale</h3>
+              <p class="meta">
+                <span>Source: Together AI Blog</span>
+                <span>Score: 70.8</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://www.together.ai/blog/learn-how-cursor-partnered-with-together-ai-to-deliver-real-time-low-latency-inference-at-scale" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>6. OpenAI gpt-oss-safeguard</h3>
+              <p class="meta">
+                <span>Source: Ollama Blog</span>
+                <span>Score: 60.6</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://ollama.com/blog/gpt-oss-safeguard" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>7. huggingface/datasets (GitHub)</h3>
+              <p class="meta">
+                <span>Source: GitHub Search</span>
+                <span>Score: 57.0</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://github.com/huggingface/datasets" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>8. camel-ai/camel (GitHub)</h3>
+              <p class="meta">
+                <span>Source: GitHub Search</span>
+                <span>Score: 57.0</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://github.com/camel-ai/camel" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>9. MiniMax M2</h3>
+              <p class="meta">
+                <span>Source: Ollama Blog</span>
+                <span>Score: 60.6</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://ollama.com/blog/minimax-m2" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>10. Replicate is joining Cloudflare</h3>
+              <p class="meta">
+                <span>Source: Cloudflare AI Blog</span>
+                <span>Score: 60.6</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://blog.cloudflare.com/replicate-joins-cloudflare/" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>11. Scaling social science research</h3>
+              <p class="meta">
+                <span>Source: OpenAI Blog</span>
+                <span>Score: 50.5</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://openai.com/index/scaling-social-science-research" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+
+            <article class="card primary">
+              <h3>12. Introducing GPT-5.3-Codex-Spark</h3>
+              <p class="meta">
+                <span>Source: OpenAI Blog</span>
+                <span>Score: 50.5</span>
+                <span>Category: ai-engineering</span>
+                <span class="badge">PRIMARY</span>
+              </p>
+              <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
+              <p><a href="https://openai.com/index/introducing-gpt-5-3-codex-spark" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+            </article>
+            
+    <p style="color: var(--muted); font-size: 12px;">Rendered at 2026-02-16T00:26:38.092695</p>
+  </div>
+</body>
+</html>

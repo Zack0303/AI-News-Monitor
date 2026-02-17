@@ -1,0 +1,153 @@
+{
+  "generated_at": "2026-02-15T16:27:51.387074+00:00",
+  "total_candidates": 35,
+  "selected": 6,
+  "run_meta": {
+    "analysis_mode": "llm_gemini",
+    "model": "gemini-2.0-flash",
+    "fallback_used": false,
+    "fallback_reason": "",
+    "top_k": 6,
+    "max_rss_per_source": 5,
+    "github_limit": 5
+  },
+  "items": [
+    {
+      "id": "rss::OpenAI Blog::https://openai.com/index/introducing-gpt-5-3-codex-spark",
+      "source": "OpenAI Blog",
+      "title": "Introducing GPT-5.3-Codex-Spark",
+      "link": "https://openai.com/index/introducing-gpt-5-3-codex-spark",
+      "content": "Introducing GPT-5.3-Codex-Spark—our first real-time coding model. 15x faster generation, 128k context, now in research preview for ChatGPT Pro users.",
+      "author": "",
+      "published_at": "Thu, 12 Feb 2026 10:00:00 GMT",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 98,
+      "novelty_score": 95,
+      "actionability_score": 80,
+      "total_score": 92.6,
+      "category": "AI Model, Code Generation",
+      "summary_cn": "推出 GPT-5.3-Codex-Spark——我们的第一个实时编码模型。生成速度快 15 倍，上下文为 128k，现在在 ChatGPT Pro 用户的研究预览版中。",
+      "key_points": [
+        "Introducing GPT-5.3-Codex-Spark, a real-time coding model.",
+        "15x faster generation, 128k context.",
+        "Available in research preview for ChatGPT Pro users."
+      ],
+      "output_tier": "primary"
+    },
+    {
+      "id": "rss::OpenAI Blog::https://openai.com/index/introducing-lockdown-mode-and-elevated-risk-labels-in-chatgpt",
+      "source": "OpenAI Blog",
+      "title": "Introducing Lockdown Mode and Elevated Risk labels in ChatGPT",
+      "link": "https://openai.com/index/introducing-lockdown-mode-and-elevated-risk-labels-in-chatgpt",
+      "content": "Introducing Lockdown Mode and Elevated Risk labels in ChatGPT to help organizations defend against prompt injection and AI-driven data exfiltration.",
+      "author": "",
+      "published_at": "Fri, 13 Feb 2026 10:00:00 GMT",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 95,
+      "novelty_score": 80,
+      "actionability_score": 70,
+      "total_score": 84.2,
+      "category": "AI Security, ChatGPT",
+      "summary_cn": "ChatGPT 引入了锁定模式和高风险标签，以帮助组织防御提示注入和 AI 驱动的数据泄露。",
+      "key_points": [
+        "Lockdown Mode introduced to defend against prompt injection.",
+        "Elevated Risk labels introduced to help defend against AI-driven data exfiltration."
+      ],
+      "output_tier": "primary"
+    },
+    {
+      "id": "rss::Ollama Blog::https://ollama.com/blog/openclaw",
+      "source": "Ollama Blog",
+      "title": "OpenClaw",
+      "link": "https://ollama.com/blog/openclaw",
+      "content": "OpenClaw is a personal AI assistant that connects your messaging apps to local AI coding agents, all running on your own device.",
+      "author": "",
+      "published_at": "Sun, 01 Feb 2026 00:00:00 +0000",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 85,
+      "novelty_score": 80,
+      "actionability_score": 70,
+      "total_score": 79.8,
+      "category": "AI Assistant, Coding Agents",
+      "summary_cn": "OpenClaw 是一款个人 AI 助理，可将您的消息应用程序连接到本地 AI 编码代理，所有这些都在您自己的设备上运行。",
+      "key_points": [
+        "OpenClaw is a personal AI assistant.",
+        "Connects messaging apps to local AI coding agents.",
+        "Runs on your own device."
+      ],
+      "output_tier": "primary"
+    },
+    {
+      "id": "github::Significant-Gravitas/AutoGPT",
+      "source": "GitHub Search",
+      "title": "Significant-Gravitas/AutoGPT (GitHub)",
+      "link": "https://github.com/Significant-Gravitas/AutoGPT",
+      "content": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.\nStars: 181819\nForks: 46223\nLanguage: Python\nLast push: 2026-02-15T07:03:49Z",
+      "author": "Significant-Gravitas",
+      "published_at": "2026-02-15T07:03:49Z",
+      "origin_type": "github",
+      "is_relevant": true,
+      "relevance_score": 90,
+      "novelty_score": 75,
+      "actionability_score": 70,
+      "total_score": 80.5,
+      "category": "AI Agents, Open Source",
+      "summary_cn": "AutoGPT 是人人可用的 AI 的愿景，可供使用和构建。我们的使命是提供工具，以便您可以专注于重要的事情。\n星数：181819\nFork 数：46223\n语言：Python\n上次推送：2026-02-15T07:03:49Z",
+      "key_points": [
+        "AutoGPT is an accessible AI for everyone to use and build on.",
+        "Provides tools to focus on what matters.",
+        "181819 stars, 46223 forks, written in Python."
+      ],
+      "output_tier": "primary"
+    },
+    {
+      "id": "github::huggingface/datasets",
+      "source": "GitHub Search",
+      "title": "huggingface/datasets (GitHub)",
+      "link": "https://github.com/huggingface/datasets",
+      "content": "🤗 The largest hub of ready-to-use datasets for AI models with fast, easy-to-use and efficient data manipulation tools\nStars: 21188\nForks: 3096\nLanguage: Python\nLast push: 2026-02-13T18:47:58Z",
+      "author": "huggingface",
+      "published_at": "2026-02-13T18:47:58Z",
+      "origin_type": "github",
+      "is_relevant": true,
+      "relevance_score": 60,
+      "novelty_score": 50,
+      "actionability_score": 40,
+      "total_score": 52.0,
+      "category": "AI Datasets",
+      "summary_cn": "🤗 用于 AI 模型（具有快速、易于使用和高效的数据操作工具）的最大型即用型数据集中心\n星数：21188\nFork 数：3096\n语言：Python\n上次推送：2026-02-13T18:47:58Z",
+      "key_points": [
+        "Largest hub of ready-to-use datasets for AI models.",
+        "Fast, easy-to-use and efficient data manipulation tools.",
+        "21188 stars, 3096 forks, written in Python."
+      ],
+      "output_tier": "primary"
+    },
+    {
+      "id": "rss::Together AI Blog::https://www.together.ai/blog/dedicated-container-inference",
+      "source": "Together AI Blog",
+      "title": "Introducing Dedicated Container Inference:  Delivering 2.6x faster inference for custom AI models",
+      "link": "https://www.together.ai/blog/dedicated-container-inference",
+      "content": "Together AI launches Dedicated Container Inference — production-grade orchestration for custom AI models with 1.4x–2.6x faster inference.",
+      "author": "",
+      "published_at": "Thu, 12 Feb 2026 00:00:00 GMT",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 85,
+      "novelty_score": 75,
+      "actionability_score": 70,
+      "total_score": 78.2,
+      "category": "AI Inference, Containerization",
+      "summary_cn": "Together AI 推出专用容器推理——用于定制 AI 模型的生产级编排，推理速度提高 1.4 倍–2.6 倍。",
+      "key_points": [
+        "Together AI launches Dedicated Container Inference.",
+        "Production-grade orchestration for custom AI models.",
+        "Inference speeds 1.4x–2.6x faster."
+      ],
+      "output_tier": "primary"
+    }
+  ]
+}
