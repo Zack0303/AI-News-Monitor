@@ -2,12 +2,6 @@ name: Build and Publish Static Site
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "site/**"
-      - "outputs/digest_*.json"
-      - "scripts/build_static_site.py"
-      - "scripts/templates/**"
 
 jobs:
   build-and-deploy:
