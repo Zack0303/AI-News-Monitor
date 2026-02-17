@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-02-15T07:36:31.745130+00:00",
+  "total_candidates": 26,
+  "selected": 2,
+  "items": [
+    {
+      "id": "github::huggingface/datasets",
+      "source": "GitHub Search",
+      "title": "huggingface/datasets (GitHub)",
+      "link": "https://github.com/huggingface/datasets",
+      "content": "🤗 The largest hub of ready-to-use datasets for AI models with fast, easy-to-use and efficient data manipulation tools\nStars: 21186\nForks: 3096\nLanguage: Python\nLast push: 2026-02-13T18:47:58Z",
+      "author": "huggingface",
+      "published_at": "2026-02-13T18:47:58Z",
+      "origin_type": "github",
+      "is_relevant": true,
+      "relevance_score": 61,
+      "novelty_score": 62,
+      "actionability_score": 44,
+      "total_score": 57.0,
+      "category": "ai-engineering",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring.",
+      "key_points": []
+    },
+    {
+      "id": "github::camel-ai/camel",
+      "source": "GitHub Search",
+      "title": "camel-ai/camel (GitHub)",
+      "link": "https://github.com/camel-ai/camel",
+      "content": "🐫 CAMEL: The first and the best multi-agent framework. Finding the Scaling Law of Agents. https://www.camel-ai.org\nStars: 16017\nForks: 1770\nLanguage: Python\nLast push: 2026-02-14T03:28:18Z",
+      "author": "camel-ai",
+      "published_at": "2026-02-14T03:28:18Z",
+      "origin_type": "github",
+      "is_relevant": true,
+      "relevance_score": 61,
+      "novelty_score": 62,
+      "actionability_score": 44,
+      "total_score": 57.0,
+      "category": "ai-engineering",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring.",
+      "key_points": []
+    }
+  ]
+}
