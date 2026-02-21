@@ -6,10 +6,11 @@
     "analysis_mode": "heuristic_fallback",
     "model": "heuristic",
     "fallback_used": true,
-    "fallback_reason": "Expecting ',' delimiter: line 726 column 6 (char 20593)",
+    "fallback_reason": "",
     "top_k": 12,
     "max_rss_per_source": 10,
-    "github_limit": 10
+    "github_limit": 10,
+    "fallback_reason_public": "redacted"
   },
   "items": [
     {

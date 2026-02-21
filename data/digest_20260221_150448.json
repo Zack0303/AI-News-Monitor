@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-02-21T15:04:48.975515+00:00",
+  "total_candidates": 6,
+  "selected": 1,
+  "run_meta": {
+    "analysis_mode": "heuristic_fallback",
+    "model": "heuristic",
+    "fallback_used": true,
+    "fallback_reason": "",
+    "llm_provider_attempted": "gemini",
+    "llm_attempts": 1,
+    "llm_batch_size": 6,
+    "llm_max_retries": 2,
+    "top_k": 1,
+    "max_rss_per_source": 1,
+    "github_limit": 0,
+    "fallback_reason_public": "redacted"
+  },
+  "items": [
+    {
+      "id": "rss::OpenAI Blog::https://openai.com/index/first-proof-submissions",
+      "source": "OpenAI Blog",
+      "title": "Our First Proof submissions",
+      "link": "https://openai.com/index/first-proof-submissions",
+      "content": "We share our AI model’s proof attempts for the First Proof math challenge, testing research-grade reasoning on expert-level problems.",
+      "author": "",
+      "published_at": "Fri, 20 Feb 2026 14:30:00 GMT",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 69,
+      "novelty_score": 62,
+      "actionability_score": 44,
+      "total_score": 60.6,
+      "category": "ai-engineering",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring.",
+      "key_points": [],
+      "output_tier": "primary"
+    }
+  ]
+}

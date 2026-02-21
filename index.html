@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI-News-Monitor</title>
+  <title>AI-News-Monitor | 今日情报</title>
+  <meta name="description" content="面向工程团队与产品团队的中文 AI 情报日报。" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,259 +12,158 @@
 </head>
 <body>
   <main class="page">
-    <header class="hero">
-      <div class="hero-left">
-        <h1>AI-News-Monitor</h1>
-        <p class="muted">Daily AI intelligence brief</p>
+    <header class="hero panel">
+      <div class="hero-main">
+        <p class="eyebrow">AI 情报日报</p>
+        <h1>今天值得跟进的 AI 信号</h1>
+        <p class="hero-desc">围绕工程落地价值筛选，优先看高信号，再看观察项。</p>
       </div>
-      <div class="hero-right">
-        <a class="link-btn" href="./history.html">History</a>
+      <div class="hero-actions">
+        <a class="link-btn" href="./history.html">历史日报</a>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-label">发布日期</span>
+          <strong>2026-02-21</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">候选总数</span>
+          <strong>7</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">主线条目</span>
+          <strong>2</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">观察条目</span>
+          <strong>0</strong>
+        </article>
       </div>
     </header>
 
+    <section class="panel trust-panel">
+      <h2>方法透明</h2>
+      <div class="trust-grid">
+        <div>
+          <span class="badge badge-mode">Mode: heuristic</span>
+          <span class="badge badge-model">Model: heuristic</span>
+          <span class="badge badge-fallback-off">
+            Fallback: False
+          </span>
+        </div>
+        <p class="muted">Generated at: 2026-02-21T15:30:16.799431+00:00</p>
+      </div>
+      <p class="muted">本地点击统计（今日）: <strong id="local-click-count">0</strong></p>
+      <div class="source-mix">
+        
+          <span class="source-pill">OpenAI Blog: 1</span>
+        
+          <span class="source-pill">Together AI Blog: 1</span>
+        
+      </div>
+    </section>
+
     <section class="panel">
-      <div class="stats">
-        <span>Generated: 2026-02-20T16:52:48.066486+00:00</span>
-        <span>Date: 2026-02-20</span>
-        <span>Candidates: 58</span>
-        <span>Selected: 10</span>
+      <div class="section-head">
+        <h2>今日重点</h2>
+        <p class="muted">按综合分排序，优先展示 Top 3。</p>
       </div>
-      <div class="mode-row">
-        <span class="badge badge-mode">Mode: heuristic_fallback</span>
-        <span class="badge badge-model">Model: heuristic</span>
-        <span class="badge badge-fallback">Fallback: True</span>
-      </div>
-      <div class="source-mix">Source Mix:
+      <div class="focus-grid">
         
-          <span class="source-pill">LangChain Blog: 2</span>
+        <article class="focus-card">
+          <p class="focus-rank">TOP 1</p>
+          <h3>Our First Proof submissions</h3>
+          <p class="meta">
+            <span>OpenAI Blog</span>
+            <span>Score: 60.6</span>
+            <span>Watchlist</span>
+          </p>
+          <p>Heuristic mode summary: keyword-based relevance scoring.</p>
+          <p class="reason">OpenAI Blog / ai-engineering，综合分 60.6，主线候选。</p>
+          <p class="action">行动建议：建议加入 watchlist，等待更多信号。</p>
+          <p><a href="https://openai.com/index/first-proof-submissions" target="_blank" rel="noopener noreferrer">查看原文</a></p>
+        </article>
         
-          <span class="source-pill">Together AI Blog: 3</span>
-        
-          <span class="source-pill">Ollama Blog: 2</span>
-        
-          <span class="source-pill">GitHub Search: 1</span>
-        
-          <span class="source-pill">OpenAI Blog: 2</span>
+        <article class="focus-card">
+          <p class="focus-rank">TOP 2</p>
+          <h3>Consistency diffusion language models: Up to 14x faster inference without sacrificing quality</h3>
+          <p class="meta">
+            <span>Together AI Blog</span>
+            <span>Score: 50.5</span>
+            <span>Watchlist</span>
+          </p>
+          <p>Heuristic mode summary: keyword-based relevance scoring.</p>
+          <p class="reason">Together AI Blog / ai-engineering，综合分 50.5，主线候选。</p>
+          <p class="action">行动建议：建议加入 watchlist，等待更多信号。</p>
+          <p><a href="https://www.together.ai/blog/consistency-diffusion-language-models" target="_blank" rel="noopener noreferrer">查看原文</a></p>
+        </article>
         
       </div>
     </section>
 
     <section class="toolbar panel">
-      <input id="search-input" class="search" placeholder="Search title / source / summary..." />
-      <label class="check-wrap"><input type="checkbox" id="github-only" /> GitHub only</label>
-      <span class="muted">Visible: <strong id="result-count">10</strong></span>
+      <input id="search-input" class="search" placeholder="搜索标题 / 来源 / 摘要..." />
+      <select id="tier-filter" class="select">
+        <option value="all">全部层级</option>
+        <option value="primary">主线</option>
+        <option value="watchlist">观察</option>
+      </select>
+      <label class="check-wrap"><input type="checkbox" id="github-only" /> 仅 GitHub</label>
+      <select id="sort-select" class="select">
+        <option value="score_desc">分数从高到低</option>
+        <option value="score_asc">分数从低到高</option>
+      </select>
+      <span class="muted">当前可见: <strong id="result-count">2</strong></span>
     </section>
 
     <section id="card-grid" class="card-grid">
       
       <article
         class="news-card"
-        data-source="LangChain Blog"
-        data-tier="primary"
-        data-has-github="false"
-      >
-        <div class="card-head">
-          <h2>1. On Agent Frameworks and Agent Observability</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: LangChain Blog</span>
-          <span>Score: 70.8</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://blog.langchain.com/on-agent-frameworks-and-agent-observability/" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
-        data-source="Together AI Blog"
-        data-tier="primary"
-        data-has-github="false"
-      >
-        <div class="card-head">
-          <h2>2. Together Evaluations now supports comparing top commercial APIs vs. open source models</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: Together AI Blog</span>
-          <span>Score: 70.8</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://www.together.ai/blog/together-evaluations-v2" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
-        data-source="LangChain Blog"
-        data-tier="primary"
-        data-has-github="false"
-      >
-        <div class="card-head">
-          <h2>3. monday Service + LangSmith: Building a Code-First Evaluation Strategy from Day 1</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: LangChain Blog</span>
-          <span>Score: 60.6</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://blog.langchain.com/customers-monday/" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
-        data-source="Ollama Blog"
-        data-tier="primary"
-        data-has-github="false"
-      >
-        <div class="card-head">
-          <h2>4. OpenAI gpt-oss-safeguard</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: Ollama Blog</span>
-          <span>Score: 60.6</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://ollama.com/blog/gpt-oss-safeguard" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
-        data-source="Ollama Blog"
-        data-tier="primary"
-        data-has-github="false"
-      >
-        <div class="card-head">
-          <h2>5. MiniMax M2</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: Ollama Blog</span>
-          <span>Score: 60.6</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://ollama.com/blog/minimax-m2" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
-        data-source="Together AI Blog"
-        data-tier="primary"
-        data-has-github="false"
-      >
-        <div class="card-head">
-          <h2>6. What do LLMs think when you don't tell them what to think about?</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: Together AI Blog</span>
-          <span>Score: 60.6</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://www.together.ai/blog/what-llms-think" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
-        data-source="Together AI Blog"
-        data-tier="primary"
-        data-has-github="false"
-      >
-        <div class="card-head">
-          <h2>7. Fine-tuning open LLM judges to outperform GPT-5.2</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: Together AI Blog</span>
-          <span>Score: 60.6</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://www.together.ai/blog/fine-tuning-open-llm-judges-to-outperform-gpt-5-2" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
-        data-source="GitHub Search"
-        data-tier="primary"
-        data-has-github="true"
-      >
-        <div class="card-head">
-          <h2>8. huggingface/datasets (GitHub)</h2>
-          <span class="badge badge-primary">
-            PRIMARY
-          </span>
-        </div>
-        <p class="meta">
-          <span>Source: GitHub Search</span>
-          <span>Score: 57.0</span>
-          <span>Category: ai-engineering</span>
-        </p>
-        <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://github.com/huggingface/datasets" target="_blank" rel="noopener noreferrer">Open Link</a></p>
-      </article>
-      
-      <article
-        class="news-card"
         data-source="OpenAI Blog"
         data-tier="primary"
         data-has-github="false"
+        data-score="60.6"
       >
         <div class="card-head">
-          <h2>9. Scaling social science research</h2>
+          <h2>1. Our First Proof submissions</h2>
           <span class="badge badge-primary">
             PRIMARY
           </span>
         </div>
         <p class="meta">
           <span>Source: OpenAI Blog</span>
-          <span>Score: 50.5</span>
+          <span>Score: 60.6</span>
           <span>Category: ai-engineering</span>
         </p>
         <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://openai.com/index/scaling-social-science-research" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+        <p class="reason">OpenAI Blog / ai-engineering，综合分 60.6，主线候选。</p>
+        <p class="action">行动建议：建议加入 watchlist，等待更多信号。</p>
+        <p><a href="https://openai.com/index/first-proof-submissions" target="_blank" rel="noopener noreferrer">Open Link</a></p>
       </article>
       
       <article
         class="news-card"
-        data-source="OpenAI Blog"
+        data-source="Together AI Blog"
         data-tier="primary"
         data-has-github="false"
+        data-score="50.5"
       >
         <div class="card-head">
-          <h2>10. Introducing GPT-5.3-Codex-Spark</h2>
+          <h2>2. Consistency diffusion language models: Up to 14x faster inference without sacrificing quality</h2>
           <span class="badge badge-primary">
             PRIMARY
           </span>
         </div>
         <p class="meta">
-          <span>Source: OpenAI Blog</span>
+          <span>Source: Together AI Blog</span>
           <span>Score: 50.5</span>
           <span>Category: ai-engineering</span>
         </p>
         <p class="summary">Heuristic mode summary: keyword-based relevance scoring.</p>
-        <p><a href="https://openai.com/index/introducing-gpt-5-3-codex-spark" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+        <p class="reason">Together AI Blog / ai-engineering，综合分 50.5，主线候选。</p>
+        <p class="action">行动建议：建议加入 watchlist，等待更多信号。</p>
+        <p><a href="https://www.together.ai/blog/consistency-diffusion-language-models" target="_blank" rel="noopener noreferrer">Open Link</a></p>
       </article>
       
     </section>
