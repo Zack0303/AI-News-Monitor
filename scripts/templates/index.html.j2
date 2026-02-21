@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI-News-Monitor</title>
+  <title>AI-News-Monitor | 今日情报</title>
+  <meta name="description" content="面向工程团队与产品团队的中文 AI 情报日报。" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,39 +12,92 @@
 </head>
 <body>
   <main class="page">
-    <header class="hero">
-      <div class="hero-left">
-        <h1>AI-News-Monitor</h1>
-        <p class="muted">Daily AI intelligence brief</p>
+    <header class="hero panel">
+      <div class="hero-main">
+        <p class="eyebrow">AI 情报日报</p>
+        <h1>今天值得跟进的 AI 信号</h1>
+        <p class="hero-desc">围绕工程落地价值筛选，优先看高信号，再看观察项。</p>
       </div>
-      <div class="hero-right">
-        <a class="link-btn" href="./history.html">History</a>
+      <div class="hero-actions">
+        <a class="link-btn" href="./history.html">历史日报</a>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-label">发布日期</span>
+          <strong>{{ date }}</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">候选总数</span>
+          <strong>{{ candidates }}</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">主线条目</span>
+          <strong>{{ site_meta.primary_count }}</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">观察条目</span>
+          <strong>{{ site_meta.watchlist_count }}</strong>
+        </article>
       </div>
     </header>
 
-    <section class="panel">
-      <div class="stats">
-        <span>Generated: {{ generated_at }}</span>
-        <span>Date: {{ date }}</span>
-        <span>Candidates: {{ candidates }}</span>
-        <span>Selected: {{ selected }}</span>
+    <section class="panel trust-panel">
+      <h2>方法透明</h2>
+      <div class="trust-grid">
+        <div>
+          <span class="badge badge-mode">Mode: {{ site_meta.analysis_mode }}</span>
+          <span class="badge badge-model">Model: {{ site_meta.model }}</span>
+          <span class="badge {{ 'badge-fallback-on' if site_meta.fallback_used else 'badge-fallback-off' }}">
+            Fallback: {{ site_meta.fallback_used }}
+          </span>
+        </div>
+        <p class="muted">Generated at: {{ generated_at }}</p>
       </div>
-      <div class="mode-row">
-        <span class="badge badge-mode">Mode: {{ run_meta.get("analysis_mode", "unknown") }}</span>
-        <span class="badge badge-model">Model: {{ run_meta.get("model", "-") }}</span>
-        <span class="badge badge-fallback">Fallback: {{ run_meta.get("fallback_used", false) }}</span>
-      </div>
-      <div class="source-mix">Source Mix:
+      <p class="muted">本地点击统计（今日）: <strong id="local-click-count">0</strong></p>
+      <div class="source-mix">
         {% for k, v in source_mix.items() %}
           <span class="source-pill">{{ k }}: {{ v }}</span>
         {% endfor %}
       </div>
     </section>
 
+    <section class="panel">
+      <div class="section-head">
+        <h2>今日重点</h2>
+        <p class="muted">按综合分排序，优先展示 Top 3。</p>
+      </div>
+      <div class="focus-grid">
+        {% for item in featured_items %}
+        <article class="focus-card">
+          <p class="focus-rank">TOP {{ loop.index }}</p>
+          <h3>{{ item.get("title", "Untitled") }}</h3>
+          <p class="meta">
+            <span>{{ item.get("source", "-") }}</span>
+            <span>Score: {{ item.get("total_score", 0) }}</span>
+            <span>{{ item.get("impact_label", "观察项") }}</span>
+          </p>
+          <p>{{ item.get("summary_cn", "") }}</p>
+          <p class="reason">{{ item.get("importance_reason", "") }}</p>
+          <p class="action">行动建议：{{ item.get("action_hint", "") }}</p>
+          <p><a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">查看原文</a></p>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
     <section class="toolbar panel">
-      <input id="search-input" class="search" placeholder="Search title / source / summary..." />
-      <label class="check-wrap"><input type="checkbox" id="github-only" /> GitHub only</label>
-      <span class="muted">Visible: <strong id="result-count">{{ items|length }}</strong></span>
+      <input id="search-input" class="search" placeholder="搜索标题 / 来源 / 摘要..." />
+      <select id="tier-filter" class="select">
+        <option value="all">全部层级</option>
+        <option value="primary">主线</option>
+        <option value="watchlist">观察</option>
+      </select>
+      <label class="check-wrap"><input type="checkbox" id="github-only" /> 仅 GitHub</label>
+      <select id="sort-select" class="select">
+        <option value="score_desc">分数从高到低</option>
+        <option value="score_asc">分数从低到高</option>
+      </select>
+      <span class="muted">当前可见: <strong id="result-count">{{ items|length }}</strong></span>
     </section>
 
     <section id="card-grid" class="card-grid">
@@ -53,6 +107,7 @@
         data-source="{{ item.get('source', 'unknown') }}"
         data-tier="{{ item.get('output_tier', 'primary') }}"
         data-has-github="{{ 'true' if 'github.com' in item.get('link', '') else 'false' }}"
+        data-score="{{ item.get('total_score', 0) }}"
       >
         <div class="card-head">
           <h2>{{ loop.index }}. {{ item.get("title", "Untitled") }}</h2>
@@ -66,6 +121,8 @@
           <span>Category: {{ item.get("category", "-") }}</span>
         </p>
         <p class="summary">{{ item.get("summary_cn", "") }}</p>
+        <p class="reason">{{ item.get("importance_reason", "") }}</p>
+        <p class="action">行动建议：{{ item.get("action_hint", "") }}</p>
         <p><a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">Open Link</a></p>
       </article>
       {% endfor %}

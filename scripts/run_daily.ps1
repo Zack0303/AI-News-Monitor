@@ -1,5 +1,5 @@
-﻿param(
-    [ValidateSet("heuristic", "codex")]
+param(
+    [ValidateSet("heuristic", "llm")]
     [string]$Mode = "heuristic",
     [int]$TopK = 12,
     [switch]$SendEmail
@@ -20,11 +20,11 @@ if ($Mode -eq "heuristic") {
     $argsList += "--no-llm"
 }
 else {
-    if (-not $env:OPENAI_API_KEY) {
-        throw "Mode=codex requires OPENAI_API_KEY in environment."
+    if (-not $env:GEMINI_API_KEY) {
+        throw "Mode=llm requires GEMINI_API_KEY in environment."
     }
-    if (-not $env:OPENAI_MODEL) {
-        $env:OPENAI_MODEL = "gpt-5-codex"
+    if (-not $env:GEMINI_MODEL) {
+        $env:GEMINI_MODEL = "gemini-2.0-flash"
     }
 }
 
@@ -35,3 +35,4 @@ if ($SendEmail) {
 Write-Host "Running daily digest..."
 Write-Host "Mode: $Mode, TopK: $TopK, SendEmail: $SendEmail"
 python @argsList
+

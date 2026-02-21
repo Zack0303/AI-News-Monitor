@@ -6,10 +6,11 @@
     "analysis_mode": "heuristic_fallback",
     "model": "heuristic",
     "fallback_used": true,
-    "fallback_reason": "429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=***",
+    "fallback_reason": "",
     "top_k": 10,
     "max_rss_per_source": 8,
-    "github_limit": 10
+    "github_limit": 10,
+    "fallback_reason_public": "redacted"
   },
   "items": [
     {

@@ -2,20 +2,64 @@ name: Build and Publish Static Site
 
 on:
   workflow_dispatch:
+    inputs:
+      target_sha:
+        description: "Commit SHA to publish (default: current branch HEAD)"
+        required: false
+        type: string
 
 jobs:
-  build-and-deploy:
+  guard-and-deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
+      checks: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve target SHA
+        id: target
+        run: |
+          if [ -n "${{ github.event.inputs.target_sha }}" ]; then
+            echo "sha=${{ github.event.inputs.target_sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Ensure CI checks passed for target SHA
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const targetSha = "${{ steps.target.outputs.sha }}";
+            const runs = await github.rest.actions.listWorkflowRuns({
+              owner,
+              repo,
+              workflow_id: "ci.yml",
+              head_sha: targetSha,
+              per_page: 20
+            });
+
+            const completed = runs.data.workflow_runs.filter(r => r.status === "completed");
+            const passed = completed.find(r => r.conclusion === "success");
+            if (!passed) {
+              core.setFailed(
+                `CI Checks has not succeeded for SHA ${targetSha}. Run/repair CI before publish.`
+              );
+              return;
+            }
+            core.info(`CI passed for ${targetSha} via run #${passed.run_number}.`);
 
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
-          commit_message: "Publish static site"
+          commit_message: "Publish static site from ${{ steps.target.outputs.sha }}"
+

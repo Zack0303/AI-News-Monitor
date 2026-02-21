@@ -26,7 +26,7 @@ def extract_date_from_filename(filename: str) -> str:
 
 def load_all_digests(outputs_dir: Path) -> list[dict[str, Any]]:
     digests: list[dict[str, Any]] = []
-    for json_file in sorted(outputs_dir.glob("digest_*.json"), reverse=True):
+    for idx, json_file in enumerate(sorted(outputs_dir.glob("digest_*.json"), reverse=True)):
         try:
             payload = json.loads(json_file.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
@@ -40,8 +40,45 @@ def load_all_digests(outputs_dir: Path) -> list[dict[str, Any]]:
             continue
         payload["_filename"] = json_file.name
         payload["_date"] = extract_date_from_filename(json_file.name)
+        try:
+            validate_digest_payload(payload, filename=json_file.name)
+        except ValueError as exc:
+            if idx == 0:
+                raise
+            print(f"[WARN] Skip legacy digest without required schema: {exc}")
+            continue
         digests.append(payload)
     return digests
+
+
+def validate_digest_payload(payload: dict[str, Any], filename: str) -> None:
+    required_root = {
+        "generated_at": str,
+        "total_candidates": int,
+        "selected": int,
+        "run_meta": dict,
+        "items": list,
+    }
+    for key, expected in required_root.items():
+        if key not in payload:
+            raise ValueError(f"{filename}: missing required key `{key}`")
+        if not isinstance(payload.get(key), expected):
+            raise ValueError(f"{filename}: key `{key}` must be {expected.__name__}")
+
+    run_meta = payload.get("run_meta", {})
+    required_meta = {"analysis_mode": str, "model": str, "fallback_used": bool}
+    for key, expected in required_meta.items():
+        if key not in run_meta:
+            raise ValueError(f"{filename}: run_meta missing `{key}`")
+        if not isinstance(run_meta.get(key), expected):
+            raise ValueError(f"{filename}: run_meta `{key}` must be {expected.__name__}")
+
+    for idx, item in enumerate(payload.get("items", []), start=1):
+        if not isinstance(item, dict):
+            raise ValueError(f"{filename}: items[{idx}] must be object")
+        for key in ("id", "title", "link", "source"):
+            if not isinstance(item.get(key), str) or not item.get(key):
+                raise ValueError(f"{filename}: items[{idx}] invalid `{key}`")
 
 
 def summarize_history(digests: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -68,6 +105,49 @@ def summarize_history(digests: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return rows
 
 
+def enrich_items_for_ui(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    enriched: list[dict[str, Any]] = []
+    for item in items:
+        score = float(item.get("total_score", 0) or 0)
+        tier = str(item.get("output_tier", "primary"))
+        category = str(item.get("category", "general"))
+        source = str(item.get("source", "unknown"))
+        if score >= 80:
+            impact = "High Priority"
+            action_hint = "建议今天安排快速评审并决定是否跟进。"
+        elif score >= 65:
+            impact = "Medium Priority"
+            action_hint = "建议本周内纳入观察并补充上下文。"
+        else:
+            impact = "Watchlist"
+            action_hint = "建议加入 watchlist，等待更多信号。"
+        reason = (
+            f"{source} / {category}，综合分 {score:.1f}，"
+            f"{'主线候选' if tier == 'primary' else '回填观察'}。"
+        )
+        enriched.append(
+            {
+                **item,
+                "impact_label": impact,
+                "action_hint": action_hint,
+                "importance_reason": reason,
+            }
+        )
+    return enriched
+
+
+def _sanitize_public_digest(payload: dict[str, Any]) -> dict[str, Any]:
+    out = dict(payload)
+    run_meta = dict(out.get("run_meta", {}) or {})
+    if "fallback_reason" in run_meta:
+        run_meta["fallback_reason"] = ""
+        run_meta["fallback_reason_public"] = "redacted"
+    out["run_meta"] = run_meta
+    out.pop("_filename", None)
+    out.pop("_date", None)
+    return out
+
+
 def _ensure_templates_exist() -> None:
     expected = [
         TEMPLATES_DIR / "index.html.j2",
@@ -78,6 +158,21 @@ def _ensure_templates_exist() -> None:
     missing = [str(p) for p in expected if not p.exists()]
     if missing:
         raise FileNotFoundError(f"Missing template files: {missing}")
+
+
+def _write_public_digest_files(digests: list[dict[str, Any]], output_dir: Path) -> None:
+    for d in digests:
+        dst = output_dir / "data" / str(d["_filename"])
+        public_payload = _sanitize_public_digest(d)
+        dst.write_text(
+            json.dumps(public_payload, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    latest_public = _sanitize_public_digest(digests[0])
+    (output_dir / "data" / "latest.json").write_text(
+        json.dumps(latest_public, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
 
 def build_site(top_k: int, output_dir: Path) -> Path:
@@ -91,12 +186,7 @@ def build_site(top_k: int, output_dir: Path) -> Path:
     (output_dir / "data").mkdir(parents=True, exist_ok=True)
     (output_dir / "assets").mkdir(parents=True, exist_ok=True)
 
-    for d in digests:
-        src = OUTPUTS_DIR / str(d["_filename"])
-        dst = output_dir / "data" / str(d["_filename"])
-        shutil.copy2(src, dst)
-
-    shutil.copy2(OUTPUTS_DIR / str(digests[0]["_filename"]), output_dir / "data" / "latest.json")
+    _write_public_digest_files(digests, output_dir)
 
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
@@ -107,6 +197,7 @@ def build_site(top_k: int, output_dir: Path) -> Path:
     items = [x for x in latest.get("items", []) if isinstance(x, dict)]
     run_meta = latest.get("run_meta", {}) or {}
     selected_items = sorted(items, key=lambda x: x.get("total_score", 0), reverse=True)[:top_k]
+    selected_items = enrich_items_for_ui(selected_items)
 
     if not selected_items:
         raise RuntimeError("No items selected for latest digest. Abort static publish.")
@@ -116,14 +207,27 @@ def build_site(top_k: int, output_dir: Path) -> Path:
         source = str(item.get("source", "unknown"))
         source_mix[source] = source_mix.get(source, 0) + 1
 
+    primary_count = len([x for x in selected_items if x.get("output_tier") == "primary"])
+    watchlist_count = len(selected_items) - primary_count
+    featured_items = selected_items[:3]
+    site_meta = {
+        "primary_count": primary_count,
+        "watchlist_count": watchlist_count,
+        "fallback_used": bool(run_meta.get("fallback_used", False)),
+        "analysis_mode": run_meta.get("analysis_mode", "unknown"),
+        "model": run_meta.get("model", "-"),
+    }
+
     index_tpl = env.get_template("index.html.j2")
     index_html = index_tpl.render(
         items=selected_items,
+        featured_items=featured_items,
         generated_at=latest.get("generated_at", ""),
         date=latest.get("_date", ""),
         candidates=latest.get("total_candidates", 0),
         selected=latest.get("selected", 0),
         run_meta=run_meta,
+        site_meta=site_meta,
         source_mix=source_mix,
     )
     (output_dir / "index.html").write_text(index_html, encoding="utf-8")
@@ -132,6 +236,17 @@ def build_site(top_k: int, output_dir: Path) -> Path:
     history_tpl = env.get_template("history.html.j2")
     history_html = history_tpl.render(history=history_rows)
     (output_dir / "history.html").write_text(history_html, encoding="utf-8")
+
+    build_info = {
+        "built_at": datetime.now().isoformat(),
+        "source_digest": str(latest.get("_filename", "")),
+        "top_k": top_k,
+        "selected_items": len(selected_items),
+    }
+    (output_dir / "build_info.txt").write_text(
+        json.dumps(build_info, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
     assets_src = TEMPLATES_DIR / "assets"
     shutil.copytree(assets_src, output_dir / "assets", dirs_exist_ok=True)

@@ -1,0 +1,49 @@
+name: CI Checks
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r phase1_rss/requirements.txt
+          python -m pip install -r phase2_agent/requirements.txt
+
+      - name: Syntax check
+        run: |
+          python -m py_compile phase1_rss/main.py
+          python -m py_compile phase1_rss/config.py
+          python -m py_compile phase1_rss/email_sender.py
+          python -m py_compile phase1_rss/pipeline/ingest.py
+          python -m py_compile phase1_rss/pipeline/normalize.py
+          python -m py_compile phase1_rss/pipeline/analyze.py
+          python -m py_compile phase1_rss/pipeline/select.py
+          python -m py_compile phase1_rss/pipeline/publish.py
+          python -m py_compile phase2_agent/agent.py
+          python -m py_compile phase2_agent/tools/github_quality.py
+          python -m py_compile scripts/build_static_site.py
+          python -m py_compile scripts/render_latest.py
+
+      - name: Build static site
+        run: python scripts/build_static_site.py --top-k 12
+
+      - name: Phase1 smoke run (heuristic)
+        run: python phase1_rss/main.py --no-llm --top-k 2 --max-rss-per-source 1 --github-limit 1
+

@@ -23,7 +23,8 @@ git commit -m "Publish static site $(Get-Date -Format 'yyyy-MM-dd HH:mm')" 2>$nu
 if ($LASTEXITCODE -ne 0) {
     Write-Host "No new site changes to commit." -ForegroundColor Yellow
 } else {
-    git push origin main
+    $CurrentBranch = (git rev-parse --abbrev-ref HEAD).Trim()
+    git push origin $CurrentBranch
 }
 
 Write-Host "Done. Check GitHub Actions deployment." -ForegroundColor Green
