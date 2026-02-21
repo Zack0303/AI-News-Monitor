@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-02-21T15:30:16.799431+00:00",
+  "total_candidates": 7,
+  "selected": 2,
+  "run_meta": {
+    "analysis_mode": "heuristic",
+    "model": "heuristic",
+    "fallback_used": false,
+    "fallback_reason": "",
+    "llm_provider_attempted": "none",
+    "llm_attempts": 0,
+    "llm_batch_size": 6,
+    "llm_max_retries": 2,
+    "top_k": 2,
+    "max_rss_per_source": 1,
+    "github_limit": 1
+  },
+  "items": [
+    {
+      "id": "rss::OpenAI Blog::https://openai.com/index/first-proof-submissions",
+      "source": "OpenAI Blog",
+      "title": "Our First Proof submissions",
+      "link": "https://openai.com/index/first-proof-submissions",
+      "content": "We share our AI model’s proof attempts for the First Proof math challenge, testing research-grade reasoning on expert-level problems.",
+      "author": "",
+      "published_at": "Fri, 20 Feb 2026 14:30:00 GMT",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 69,
+      "novelty_score": 62,
+      "actionability_score": 44,
+      "total_score": 60.6,
+      "category": "ai-engineering",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring.",
+      "key_points": [],
+      "output_tier": "primary"
+    },
+    {
+      "id": "rss::Together AI Blog::https://www.together.ai/blog/consistency-diffusion-language-models",
+      "source": "Together AI Blog",
+      "title": "Consistency diffusion language models: Up to 14x faster inference without sacrificing quality",
+      "link": "https://www.together.ai/blog/consistency-diffusion-language-models",
+      "content": "Standard diffusion language models can't use KV caching and need too many refinement steps to be practical. CDLM fixes both with a post-training recipe that enables exact block-wise KV caching and trajectory-consistent step reduction — delivering up to 14.5x latency improvements",
+      "author": "",
+      "published_at": "Thu, 19 Feb 2026 00:00:00 GMT",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 57,
+      "novelty_score": 53,
+      "actionability_score": 36,
+      "total_score": 50.5,
+      "category": "ai-engineering",
+      "summary_cn": "Heuristic mode summary: keyword-based relevance scoring.",
+      "key_points": [],
+      "output_tier": "primary"
+    }
+  ]
+}

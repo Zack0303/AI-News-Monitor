@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-02-21T15:04:30.626272+00:00",
+  "total_candidates": 6,
+  "selected": 1,
+  "run_meta": {
+    "analysis_mode": "llm_gemini",
+    "model": "gemini-2.0-flash",
+    "fallback_used": false,
+    "fallback_reason": "",
+    "llm_provider_attempted": "gemini",
+    "llm_attempts": 1,
+    "llm_batch_size": 6,
+    "llm_max_retries": 2,
+    "top_k": 1,
+    "max_rss_per_source": 1,
+    "github_limit": 0
+  },
+  "items": [
+    {
+      "id": "rss::Together AI Blog::https://www.together.ai/blog/consistency-diffusion-language-models",
+      "source": "Together AI Blog",
+      "title": "Consistency diffusion language models: Up to 14x faster inference without sacrificing quality",
+      "link": "https://www.together.ai/blog/consistency-diffusion-language-models",
+      "content": "Standard diffusion language models can't use KV caching and need too many refinement steps to be practical. CDLM fixes both with a post-training recipe that enables exact block-wise KV caching and trajectory-consistent step reduction — delivering up to 14.5x latency improvements",
+      "author": "",
+      "published_at": "Thu, 19 Feb 2026 00:00:00 GMT",
+      "origin_type": "rss",
+      "is_relevant": true,
+      "relevance_score": 95,
+      "novelty_score": 90,
+      "actionability_score": 85,
+      "total_score": 91.0,
+      "category": "Language Models",
+      "summary_cn": "一致性扩散语言模型(CDLM)通过后训练方法实现高达14倍的推理速度提升，同时不牺牲质量。",
+      "key_points": [
+        "CDLM实现更快的推理速度",
+        "CDLM使用后训练方法",
+        "CDLM不牺牲质量"
+      ],
+      "output_tier": "primary"
+    }
+  ]
+}
