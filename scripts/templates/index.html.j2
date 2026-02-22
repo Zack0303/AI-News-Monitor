@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/style.css" />
+  <script type="application/ld+json">{{ index_structured_data }}</script>
 </head>
 <body>
   <main class="page">
@@ -53,7 +54,11 @@
         </div>
         <p class="muted">Generated at: {{ generated_at }}</p>
       </div>
-      <p class="muted">本地点击统计（今日）: <strong id="local-click-count">0</strong></p>
+      <div class="feedback-row">
+        <p class="muted">本地点击统计（今日）: <strong id="local-click-count">0</strong></p>
+        <p class="muted">反馈事件（累计）: <strong id="local-feedback-count">0</strong></p>
+        <button id="export-feedback" class="link-btn" type="button">导出反馈 JSON</button>
+      </div>
       <div class="source-mix">
         {% for k, v in source_mix.items() %}
           <span class="source-pill">{{ k }}: {{ v }}</span>
@@ -64,22 +69,34 @@
     <section class="panel">
       <div class="section-head">
         <h2>今日重点</h2>
-        <p class="muted">按综合分排序，优先展示 Top 3。</p>
+        <p class="muted">按个性化综合分排序，优先展示 Top 3。</p>
       </div>
       <div class="focus-grid">
         {% for item in featured_items %}
-        <article class="focus-card">
+        <article class="focus-card"
+          data-item-id="{{ item.get('id','') }}"
+          data-source="{{ item.get('source','') }}"
+          data-link="{{ item.get('link','') }}"
+          data-title="{{ item.get('title','') }}">
           <p class="focus-rank">TOP {{ loop.index }}</p>
           <h3>{{ item.get("title", "Untitled") }}</h3>
           <p class="meta">
             <span>{{ item.get("source", "-") }}</span>
             <span>Score: {{ item.get("total_score", 0) }}</span>
-            <span>{{ item.get("impact_label", "观察项") }}</span>
+            <span>Personalized: {{ item.get("personalized_total_score", item.get("total_score", 0)) }}</span>
           </p>
           <p>{{ item.get("summary_cn", "") }}</p>
-          <p class="reason">{{ item.get("importance_reason", "") }}</p>
-          <p class="action">行动建议：{{ item.get("action_hint", "") }}</p>
-          <p><a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">查看原文</a></p>
+          <p class="reason">{{ item.get("why_it_matters", "") }}</p>
+          <p class="reason">推荐依据：{{ item.get("preference_explain", "no-preference-signal") }}</p>
+          <p class="action">下一步：{{ item.get("next_action", item.get("action_hint", "")) }}</p>
+          <div class="feedback-actions">
+            <button class="feedback-btn" data-feedback="like" type="button">👍 喜欢</button>
+            <button class="feedback-btn" data-feedback="dislike" type="button">👎 不喜欢</button>
+          </div>
+          <p>
+            <a href="{{ item.get('detail_url', '#') }}">查看解读</a> |
+            <a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">查看原文</a>
+          </p>
         </article>
         {% endfor %}
       </div>
@@ -104,10 +121,13 @@
       {% for item in items %}
       <article
         class="news-card"
+        data-item-id="{{ item.get('id','') }}"
         data-source="{{ item.get('source', 'unknown') }}"
         data-tier="{{ item.get('output_tier', 'primary') }}"
         data-has-github="{{ 'true' if 'github.com' in item.get('link', '') else 'false' }}"
-        data-score="{{ item.get('total_score', 0) }}"
+        data-score="{{ item.get('personalized_total_score', item.get('total_score', 0)) }}"
+        data-link="{{ item.get('link','') }}"
+        data-title="{{ item.get('title','') }}"
       >
         <div class="card-head">
           <h2>{{ loop.index }}. {{ item.get("title", "Untitled") }}</h2>
@@ -118,12 +138,21 @@
         <p class="meta">
           <span>Source: {{ item.get("source", "-") }}</span>
           <span>Score: {{ item.get("total_score", 0) }}</span>
+          <span>Personalized: {{ item.get("personalized_total_score", item.get("total_score", 0)) }}</span>
           <span>Category: {{ item.get("category", "-") }}</span>
         </p>
         <p class="summary">{{ item.get("summary_cn", "") }}</p>
-        <p class="reason">{{ item.get("importance_reason", "") }}</p>
-        <p class="action">行动建议：{{ item.get("action_hint", "") }}</p>
-        <p><a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">Open Link</a></p>
+        <p class="reason">{{ item.get("why_it_matters", "") }}</p>
+        <p class="reason">推荐依据：{{ item.get("preference_explain", "no-preference-signal") }}</p>
+        <p class="action">下一步：{{ item.get("next_action", item.get("action_hint", "")) }}</p>
+        <div class="feedback-actions">
+          <button class="feedback-btn" data-feedback="like" type="button">👍 喜欢</button>
+          <button class="feedback-btn" data-feedback="dislike" type="button">👎 不喜欢</button>
+        </div>
+        <p>
+          <a href="{{ item.get('detail_url', '#') }}">查看解读</a> |
+          <a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">Open Link</a>
+        </p>
       </article>
       {% endfor %}
     </section>
@@ -131,3 +160,4 @@
   <script src="./assets/app.js"></script>
 </body>
 </html>
+

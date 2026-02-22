@@ -26,9 +26,11 @@ function Assert-True {
 $requiredFiles = @(
     "index.html",
     "history.html",
+    "sitemap.xml",
     "assets/style.css",
     "assets/app.js",
-    "data/latest.json"
+    "data/latest.json",
+    "articles"
 )
 
 foreach ($f in $requiredFiles) {
@@ -56,6 +58,13 @@ if (Test-Path $latestJsonPath) {
     catch {
         $errors.Add("latest.json is not valid JSON: $($_.Exception.Message)")
     }
+}
+
+$sitemapPath = Join-Path $ResolvedSiteDir "sitemap.xml"
+if (Test-Path $sitemapPath) {
+    $sitemap = Get-Content $sitemapPath -Raw -Encoding UTF8
+    Assert-True ($sitemap -match "<urlset") "sitemap.xml invalid: missing urlset"
+    Assert-True ($sitemap -match "history.html") "sitemap.xml missing history page"
 }
 
 if ($errors.Count -gt 0) {

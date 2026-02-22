@@ -16,6 +16,9 @@ if (!(Test-Path $MainScript)) {
 
 $argsList = @($MainScript, "--top-k", "$TopK")
 
+Write-Host "Updating preference profile..."
+python .\scripts\update_preference_profile.py
+
 if ($Mode -eq "heuristic") {
     $argsList += "--no-llm"
 }
@@ -35,4 +38,3 @@ if ($SendEmail) {
 Write-Host "Running daily digest..."
 Write-Host "Mode: $Mode, TopK: $TopK, SendEmail: $SendEmail"
 python @argsList
-

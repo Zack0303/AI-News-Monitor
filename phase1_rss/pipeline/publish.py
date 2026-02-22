@@ -52,9 +52,10 @@ def write_outputs(
                 f"- Tier: {item.get('output_tier', 'primary')}",
                 f"- Link: {item.get('link')}",
                 f"- Summary: {item.get('summary_cn', '')}",
+                f"- Why It Matters: {item.get('why_it_matters', '')}",
+                f"- Next Action: {item.get('next_action', '')}",
                 "",
             ]
         )
     md_path.write_text("\n".join(lines), encoding="utf-8")
     return md_path, json_path
-

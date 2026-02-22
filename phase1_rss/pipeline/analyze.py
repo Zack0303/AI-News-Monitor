@@ -85,6 +85,8 @@ def _merge_llm_result(
                 "category": enrich.get("category", "general"),
                 "summary_cn": enrich.get("summary_cn", ""),
                 "key_points": enrich.get("key_points", []),
+                "why_it_matters": enrich.get("why_it_matters", ""),
+                "next_action": enrich.get("next_action", ""),
             }
         )
     return merged
@@ -109,7 +111,9 @@ def _gemini_analyze_batch(
         "You are an AI technology analyst. Return strict JSON array only. "
         "For each input item, output fields: id, is_relevant(boolean), "
         "relevance_score(0-100), novelty_score(0-100), actionability_score(0-100), "
-        "category, summary_cn, key_points(array). No markdown, no explanation.\n\n"
+        "category, summary_cn, key_points(array), "
+        "why_it_matters(max 40 Chinese chars), next_action(max 40 Chinese chars). "
+        "No markdown, no explanation.\n\n"
         + json.dumps(payload, ensure_ascii=False)
     )
 
@@ -181,6 +185,16 @@ def heuristic_analyze(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "category": "ai-engineering" if is_relevant else "noise",
                 "summary_cn": "Heuristic mode summary: keyword-based relevance scoring.",
                 "key_points": [],
+                "why_it_matters": (
+                    "该条目反映了可落地的技术信号。"
+                    if is_relevant
+                    else "信息密度较低，暂不优先跟进。"
+                ),
+                "next_action": (
+                    "列入本周跟进并补充原文细节。"
+                    if is_relevant
+                    else "保留观察，等待更多验证信号。"
+                ),
             }
         )
     return analyzed

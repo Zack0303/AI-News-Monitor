@@ -1,18 +1,98 @@
 from __future__ import annotations
 
+import json
 import os
+import re
+from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
+
+
+def _project_root() -> Path:
+    return Path(__file__).resolve().parents[2]
+
+
+def _load_preference_profile() -> dict[str, Any]:
+    profile_path = _project_root() / "feedback" / "preference_profile.json"
+    if not profile_path.exists():
+        return {}
+    try:
+        payload = json.loads(profile_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _tokenize(text: str) -> list[str]:
+    return [t for t in re.findall(r"[a-zA-Z0-9\-_]{3,}", text.lower())]
+
+
+def _domain(url: str) -> str:
+    try:
+        return (urlparse(url).netloc or "").lower()
+    except Exception:
+        return ""
+
+
+def _apply_preference_scores(
+    items: list[dict[str, Any]], profile: dict[str, Any]
+) -> list[dict[str, Any]]:
+    source_weights = profile.get("source_weights", {}) or {}
+    domain_weights = profile.get("domain_weights", {}) or {}
+    keyword_weights = profile.get("keyword_weights", {}) or {}
+    alpha = float(os.getenv("PREFERENCE_ALPHA", "1.5"))
+
+    out: list[dict[str, Any]] = []
+    for item in items:
+        score = 0.0
+        reasons: list[str] = []
+
+        source = str(item.get("source", ""))
+        if source and source in source_weights:
+            delta = float(source_weights[source])
+            score += delta
+            reasons.append(f"source({source})={delta:+.1f}")
+
+        d = _domain(str(item.get("link", "")))
+        if d and d in domain_weights:
+            delta = float(domain_weights[d])
+            score += delta
+            reasons.append(f"domain({d})={delta:+.1f}")
+
+        text = f"{item.get('title', '')} {item.get('summary_cn', '')} {item.get('content', '')}"
+        keyword_delta = 0.0
+        for token in set(_tokenize(text)):
+            if token in keyword_weights:
+                keyword_delta += float(keyword_weights[token])
+        if keyword_delta:
+            score += keyword_delta
+            reasons.append(f"keywords={keyword_delta:+.1f}")
+
+        preference_score = round(score, 2)
+        base = float(item.get("total_score", 0) or 0)
+        personalized = round(base + alpha * preference_score, 2)
+        y = dict(item)
+        y["preference_score"] = preference_score
+        y["personalized_total_score"] = personalized
+        y["preference_reasons"] = reasons
+        out.append(y)
+    return out
+
+
+def _sort_score(x: dict[str, Any]) -> float:
+    return float(x.get("personalized_total_score", x.get("total_score", 0)) or 0)
 
 
 def select_diversified_top_items(
     items: list[dict[str, Any]], top_k: int
 ) -> list[dict[str, Any]]:
-    relevant = [x for x in items if x.get("is_relevant")]
-    relevant.sort(key=lambda x: x.get("total_score", 0), reverse=True)
+    profile = _load_preference_profile()
+    scored_items = _apply_preference_scores(items, profile)
+
+    relevant = [x for x in scored_items if x.get("is_relevant")]
+    relevant.sort(key=_sort_score, reverse=True)
     if not relevant:
-        fallback = sorted(items, key=lambda x: x.get("total_score", 0), reverse=True)[
-            :top_k
-        ]
+        fallback = sorted(scored_items, key=_sort_score, reverse=True)[:top_k]
         out: list[dict[str, Any]] = []
         for item in fallback:
             y = dict(item)
@@ -67,9 +147,7 @@ def select_diversified_top_items(
 
     if len(selected) < top_k:
         remaining = [
-            x
-            for x in sorted(items, key=lambda z: z.get("total_score", 0), reverse=True)
-            if str(x.get("id", "")) not in used_ids
+            x for x in sorted(scored_items, key=_sort_score, reverse=True) if str(x.get("id", "")) not in used_ids
         ]
         for item in remaining:
             if len(selected) >= top_k:

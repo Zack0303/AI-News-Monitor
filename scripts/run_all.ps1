@@ -15,7 +15,10 @@ $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $ProjectRoot
 
-Write-Host "[1/4] Running phase1 digest..."
+Write-Host "[0/5] Updating preference profile..."
+python .\scripts\update_preference_profile.py
+
+Write-Host "[1/5] Running phase1 digest..."
 $phase1Args = @(
     ".\phase1_rss\main.py",
     "--top-k", "$TopK",
@@ -27,11 +30,11 @@ if ($Mode -eq "heuristic") {
 }
 python @phase1Args
 
-Write-Host "[2/4] Rendering HTML dashboard..."
+Write-Host "[2/5] Rendering HTML dashboard..."
 python .\scripts\render_latest.py
 
 if ($RunAgent) {
-    Write-Host "[3/4] Running phase2 agent report..."
+    Write-Host "[3/5] Running phase2 agent report..."
     $agentArgs = @(".\phase2_agent\agent.py")
     if ($UseAgentLlm) {
         $agentArgs += "--use-llm"
@@ -39,15 +42,15 @@ if ($RunAgent) {
     python @agentArgs
 }
 else {
-    Write-Host "[3/4] Skipped phase2 agent."
+    Write-Host "[3/5] Skipped phase2 agent."
 }
 
 if (-not $SkipSync) {
-    Write-Host "[4/4] Syncing to Obsidian..."
+    Write-Host "[4/5] Syncing to Obsidian..."
     .\scripts\sync_obsidian.ps1 -VaultPath $VaultPath
 }
 else {
-    Write-Host "[4/4] Skipped Obsidian sync."
+    Write-Host "[4/5] Skipped Obsidian sync."
 }
 
 Write-Host "[DONE] Full pipeline completed."

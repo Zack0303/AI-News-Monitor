@@ -13,8 +13,7 @@
     "llm_max_retries": 2,
     "top_k": 4,
     "max_rss_per_source": 1,
-    "github_limit": 2,
-    "fallback_reason_public": "redacted"
+    "github_limit": 2
   },
   "items": [
     {

@@ -7,68 +7,65 @@ python -m pip install -r .\phase1_rss\requirements.txt
 Copy-Item .\phase1_rss\.env.example .\phase1_rss\.env
 ```
 
-## 2. 运行命令
-Heuristic（稳定验证）：
+## 2. 推荐命令
+Heuristic：
 ```powershell
 .\scripts\run_all.ps1 -Mode heuristic -TopK 10 -SkipSync
 ```
 
-Gemini（失败自动回退 heuristic）：
+Gemini：
 ```powershell
-.\scripts\run_all.ps1 -Mode llm -TopK 10 -SkipSync
+.\scripts\run_all.ps1 -Mode llm -TopK 12 -SkipSync
 ```
 
-仅 Phase1：
+仅跑日报：
 ```powershell
-.\scripts\run_daily.ps1 -Mode llm -TopK 10
+.\scripts\run_daily.ps1 -Mode llm -TopK 12
 ```
 
-## 3. 有限 Gemini 配额建议
-- `LLM_BATCH_SIZE=4~8`
-- `LLM_MAX_RETRIES=1~2`
-- `TopK=8~12`
+## 3. 偏好训练与反馈
+1. 添加手动喜欢条目：
+```powershell
+python .\scripts\add_liked_item.py --url "https://example.com/article" --title "Example" --tags "agent,benchmark"
+```
 
-## 4. 半自动发布流程
-当前采用半自动：
-1. `push/PR -> master` 时，GitHub Actions 自动跑 `CI Checks`（语法、构建、smoke）。
-2. Pages 发布仍手动触发 `Build and Publish Static Site` workflow。
+2. 导入网页反馈（由页面导出 JSON）：
+```powershell
+python .\scripts\import_web_feedback.py --input .\anm_feedback_export.json
+```
 
-这样做的目标是先保证质量门禁，再保留人工发布确认。
+3. 生成偏好画像：
+```powershell
+python .\scripts\update_preference_profile.py
+```
 
-## 5. 结果验证清单
+4. 偏好画像文件：
+- `feedback/preference_profile.json`
+5. 云端收集评估：
+- `docs/CLOUD_FEEDBACK_EVALUATION.md`
+
+## 4. 结果检查
 - `outputs/digest_*.json` 已生成
-- `run_meta.analysis_mode` 符合预期
-- `run_meta.fallback_used` 是否为 `true`
-- `run_meta.llm_attempts` 是否合理
-- `outputs/latest_digest.html` 可正常打开
+- `run_meta.analysis_mode` 合理
+- `items[*].preference_score` 与 `personalized_total_score` 存在
+- `items[*].why_it_matters` 与 `next_action` 存在
+- `site/data/latest.json` 已更新
 
-## 6. 前端渲染
+## 5. 发布流程（半自动）
+1. `push/PR -> master` 自动跑 `CI Checks`
+2. 手动触发 `Build and Publish Static Site`
+3. 发布后本地验收：
 ```powershell
-python .\scripts\render_latest.py
-```
-输出：`outputs/latest_digest.html`
-
-## 7. 发布到 GitHub Pages（静态）
-```powershell
-python .\scripts\build_static_site.py --top-k 12
-.\scripts\deploy_static.ps1 -TopK 12
+powershell -ExecutionPolicy Bypass -File .\scripts\post_publish_check.ps1
 ```
 
-## 8. 安全提交（必须）
-1. 确认 `.env` 不进 git：
+## 6. 安全提交
+1. `.env` 不进 git
 ```powershell
 git check-ignore -v phase1_rss/.env
 ```
 
-2. 提交前扫描密钥：
+2. 扫描密钥
 ```powershell
 rg -n "AIzaSy|sk-|OPENAI_API_KEY=|GEMINI_API_KEY=" . -g "!outputs/**" -g "!site/**"
 ```
-
-3. 显式提交业务代码与文档：
-```powershell
-git add phase1_rss scripts docs README.md .github/workflows
-git commit -m "update pipeline"
-git push origin master
-```
-

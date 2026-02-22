@@ -44,6 +44,8 @@ jobs:
       - name: Build static site
         run: python scripts/build_static_site.py --top-k 12
 
+      - name: Update preference profile
+        run: python scripts/update_preference_profile.py
+
       - name: Phase1 smoke run (heuristic)
         run: python phase1_rss/main.py --no-llm --top-k 2 --max-rss-per-source 1 --github-limit 1
-

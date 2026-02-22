@@ -5,9 +5,14 @@
   const sortSelect = document.getElementById("sort-select");
   const resultCount = document.getElementById("result-count");
   const localClickCount = document.getElementById("local-click-count");
+  const localFeedbackCount = document.getElementById("local-feedback-count");
+  const exportFeedbackBtn = document.getElementById("export-feedback");
   const cardGrid = document.getElementById("card-grid");
   const cards = Array.from(document.querySelectorAll(".news-card"));
   if (!cardGrid || !cards.length) return;
+
+  const CLICK_KEY = "anm_click_events";
+  const FEEDBACK_KEY = "anm_feedback_events";
 
   function getScore(card) {
     const raw = card.getAttribute("data-score") || "0";
@@ -47,49 +52,91 @@
     sorted.forEach((card) => cardGrid.appendChild(card));
   }
 
-  function update() {
-    applySort();
-    applyFilters();
+  function readEvents(key) {
+    try {
+      return JSON.parse(localStorage.getItem(key) || "[]");
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function appendEvent(key, payload) {
+    const previous = readEvents(key);
+    previous.push(payload);
+    localStorage.setItem(key, JSON.stringify(previous.slice(-500)));
   }
 
   function trackClick(linkEl) {
     const card = linkEl.closest(".news-card, .focus-card");
     if (!card) return;
-    const sourceText = (card.querySelector(".meta span")?.textContent || "").replace("Source:", "").trim();
-    const title = (card.querySelector("h2, h3")?.textContent || "").trim();
     const payload = {
       ts: new Date().toISOString(),
-      title,
-      source: sourceText,
-      href: linkEl.href || "",
+      item_id: card.dataset.itemId || "",
+      title: card.dataset.title || "",
+      source: card.dataset.source || "",
+      href: card.dataset.link || linkEl.href || "",
+      label: "open",
+      channel: "web",
     };
-    try {
-      const key = "anm_click_events";
-      const previous = JSON.parse(localStorage.getItem(key) || "[]");
-      previous.push(payload);
-      const trimmed = previous.slice(-200);
-      localStorage.setItem(key, JSON.stringify(trimmed));
-      renderLocalClickCount();
-    } catch (_) {}
+    appendEvent(CLICK_KEY, payload);
+    renderLocalCounts();
 
     if (typeof window.plausible === "function") {
       window.plausible("open_link", {
-        props: { source: sourceText || "unknown" },
+        props: { source: payload.source || "unknown" },
       });
     }
   }
 
-  function renderLocalClickCount() {
-    if (!localClickCount) return;
-    const today = new Date().toISOString().slice(0, 10);
-    try {
-      const key = "anm_click_events";
-      const events = JSON.parse(localStorage.getItem(key) || "[]");
-      const count = events.filter((x) => String(x.ts || "").startsWith(today)).length;
-      localClickCount.textContent = String(count);
-    } catch (_) {
-      localClickCount.textContent = "0";
+  function trackFeedback(btnEl) {
+    const card = btnEl.closest(".news-card, .focus-card");
+    if (!card) return;
+    const label = btnEl.dataset.feedback || "";
+    if (!label) return;
+    const payload = {
+      ts: new Date().toISOString(),
+      item_id: card.dataset.itemId || "",
+      title: card.dataset.title || "",
+      source: card.dataset.source || "",
+      href: card.dataset.link || "",
+      label,
+      channel: "web",
+    };
+    appendEvent(FEEDBACK_KEY, payload);
+    renderLocalCounts();
+
+    if (typeof window.plausible === "function") {
+      window.plausible("feedback", {
+        props: { label, source: payload.source || "unknown" },
+      });
     }
+  }
+
+  function downloadFeedback() {
+    const events = readEvents(FEEDBACK_KEY);
+    const blob = new Blob([JSON.stringify(events, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "anm_feedback_export.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function renderLocalCounts() {
+    const today = new Date().toISOString().slice(0, 10);
+    if (localClickCount) {
+      const clicks = readEvents(CLICK_KEY).filter((x) => String(x.ts || "").startsWith(today)).length;
+      localClickCount.textContent = String(clicks);
+    }
+    if (localFeedbackCount) {
+      localFeedbackCount.textContent = String(readEvents(FEEDBACK_KEY).length);
+    }
+  }
+
+  function update() {
+    applySort();
+    applyFilters();
   }
 
   searchInput?.addEventListener("input", update);
@@ -99,6 +146,12 @@
   document.querySelectorAll(".news-card a, .focus-card a").forEach((a) => {
     a.addEventListener("click", () => trackClick(a));
   });
-  renderLocalClickCount();
+  document.querySelectorAll(".feedback-btn").forEach((btn) => {
+    btn.addEventListener("click", () => trackFeedback(btn));
+  });
+  exportFeedbackBtn?.addEventListener("click", downloadFeedback);
+
+  renderLocalCounts();
   update();
 })();
+
