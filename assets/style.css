@@ -128,6 +128,14 @@ body {
   flex-wrap: wrap;
 }
 
+.feedback-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 8px;
+}
+
 .source-pill {
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -234,6 +242,26 @@ body {
   line-height: 1.45;
 }
 
+.feedback-actions {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.feedback-btn {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0e1833;
+  color: var(--text-primary);
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.feedback-btn:hover {
+  background: #152347;
+}
+
 .reason {
   color: var(--text-secondary);
 }
@@ -282,4 +310,3 @@ a:hover {
   .card-grid { grid-template-columns: 1fr; }
   .search { min-width: 100%; }
 }
-

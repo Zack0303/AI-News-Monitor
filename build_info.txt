@@ -1,6 +1,6 @@
 {
-  "built_at": "2026-02-22T00:29:28.297242",
-  "source_digest": "digest_20260221_162920.json",
+  "built_at": "2026-02-22T17:28:43.784040",
+  "source_digest": "digest_20260222_092204.json",
   "top_k": 12,
-  "selected_items": 12
+  "selected_items": 4
 }
