@@ -8,6 +8,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
+Set-Location $ProjectRoot
 $MainScript = Join-Path $ProjectRoot "phase1_rss\main.py"
 
 if (!(Test-Path $MainScript)) {

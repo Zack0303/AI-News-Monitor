@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI-News-Monitor | Daily Signals</title>
+  <meta name="description" content="English snapshot of today's AI signals curated for builders and product teams." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="hero panel">
+      <div class="hero-main">
+        <p class="eyebrow">AI Daily Digest</p>
+        <h1>Signals Worth Tracking Today</h1>
+        <p class="hero-desc">V1 English edition with auto-translation plus fallback on source text.</p>
+      </div>
+      <div class="hero-actions">
+        <a class="link-btn" href="../index.html">中文</a>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-label">Date</span>
+          <strong>{{ date }}</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Candidates</span>
+          <strong>{{ candidates }}</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Selected</span>
+          <strong>{{ selected }}</strong>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Translated At</span>
+          <strong>{{ translation_updated_at[:10] if translation_updated_at else '-' }}</strong>
+        </article>
+      </div>
+    </header>
+
+    <section class="panel trust-panel">
+      <h2>Build Meta</h2>
+      <div class="trust-grid">
+        <div>
+          <span class="badge badge-mode">Mode: {{ site_meta.analysis_mode }}</span>
+          <span class="badge badge-model">Model: {{ site_meta.model }}</span>
+          <span class="badge {{ 'badge-fallback-on' if site_meta.fallback_used else 'badge-fallback-off' }}">
+            Digest Fallback: {{ site_meta.fallback_used }}
+          </span>
+        </div>
+        <p class="muted">Digest generated: {{ generated_at }}</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Top Focus</h2>
+        <p class="muted">Top 3 items by personalized score.</p>
+      </div>
+      <div class="focus-grid">
+        {% for item in featured_items %}
+        <article class="focus-card">
+          <p class="focus-rank">TOP {{ loop.index }}</p>
+          <h3>{{ item.get('title_en', item.get('title', 'Untitled')) }}</h3>
+          <p class="meta">
+            <span>{{ item.get('source', '-') }}</span>
+            <span>Score: {{ item.get('personalized_total_score', item.get('total_score', 0)) }}</span>
+            <span>Status: {{ item.get('translation_status', 'unknown') }}</span>
+          </p>
+          <p>{{ item.get('summary_en', item.get('summary_cn', '')) }}</p>
+          <p class="reason">Why: {{ item.get('why_it_matters_en', item.get('why_it_matters', '')) }}</p>
+          <p class="action">Next: {{ item.get('next_action_en', item.get('next_action', '')) }}</p>
+          <p><a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">Open source</a></p>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="toolbar panel">
+      <input id="search-input" class="search" placeholder="Search title / source / summary..." />
+      <select id="tier-filter" class="select">
+        <option value="all">All tiers</option>
+        <option value="primary">Primary</option>
+        <option value="watchlist">Watchlist</option>
+      </select>
+      <label class="check-wrap"><input type="checkbox" id="github-only" /> GitHub only</label>
+      <select id="sort-select" class="select">
+        <option value="score_desc">Score desc</option>
+        <option value="score_asc">Score asc</option>
+      </select>
+      <span class="muted">Visible: <strong id="result-count">{{ items|length }}</strong></span>
+    </section>
+
+    <section id="card-grid" class="card-grid">
+      {% for item in items %}
+      <article
+        class="news-card"
+        data-item-id="{{ item.get('id','') }}"
+        data-source="{{ item.get('source', 'unknown') }}"
+        data-tier="{{ item.get('output_tier', 'primary') }}"
+        data-has-github="{{ 'true' if 'github.com' in item.get('link', '') else 'false' }}"
+        data-score="{{ item.get('personalized_total_score', item.get('total_score', 0)) }}"
+        data-link="{{ item.get('link','') }}"
+        data-title="{{ item.get('title_en', item.get('title','')) }}"
+      >
+        <div class="card-head">
+          <h2>{{ loop.index }}. {{ item.get('title_en', item.get('title', 'Untitled')) }}</h2>
+          <span class="badge {{ 'badge-primary' if item.get('output_tier', 'primary') == 'primary' else 'badge-watchlist' }}">
+            {{ item.get('output_tier', 'primary').upper() }}
+          </span>
+        </div>
+        <p class="meta">
+          <span>Source: {{ item.get('source', '-') }}</span>
+          <span>Score: {{ item.get('total_score', 0) }}</span>
+          <span>Personalized: {{ item.get('personalized_total_score', item.get('total_score', 0)) }}</span>
+          <span>Status: {{ item.get('translation_status', 'unknown') }}</span>
+        </p>
+        <p class="summary">{{ item.get('summary_en', item.get('summary_cn', '')) }}</p>
+        <p class="reason">Why: {{ item.get('why_it_matters_en', item.get('why_it_matters', '')) }}</p>
+        <p class="action">Next: {{ item.get('next_action_en', item.get('next_action', '')) }}</p>
+        <p><a href="{{ item.get('link', '#') }}" target="_blank" rel="noopener noreferrer">Open source</a></p>
+      </article>
+      {% endfor %}
+    </section>
+  </main>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

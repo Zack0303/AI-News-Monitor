@@ -35,6 +35,13 @@ def _priority_by_score(score: float) -> str:
     return "P2"
 
 
+def _safe_float(value: Any) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def run_github_due_diligence(
     items: list[dict[str, Any]], github_token: str | None = None
 ) -> list[dict[str, Any]]:
@@ -47,14 +54,25 @@ def run_github_due_diligence(
         if link in seen:
             continue
         seen.add(link)
-        q = check_github_quality(link, github_token=github_token)
+
+        try:
+            q = check_github_quality(link, github_token=github_token)
+        except Exception as exc:
+            q = {
+                "repo_url": link,
+                "ok": False,
+                "error": f"GitHub due diligence failed: {exc}",
+                "quality_score": 0,
+                "recommendation": "unknown",
+            }
+
         q["from_item_title"] = item.get("title", "")
         q["from_source"] = item.get("source", "")
-        q["priority"] = _priority_by_score(float(q.get("quality_score", 0)))
+        q["priority"] = _priority_by_score(_safe_float(q.get("quality_score", 0)))
         reports.append(q)
-    reports.sort(key=lambda x: x.get("quality_score", 0), reverse=True)
-    return reports
 
+    reports.sort(key=lambda x: _safe_float(x.get("quality_score", 0)), reverse=True)
+    return reports
 
 def run_non_github_analysis(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     reports: list[dict[str, Any]] = []
@@ -322,3 +340,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

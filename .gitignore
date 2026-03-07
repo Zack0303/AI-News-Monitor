@@ -19,3 +19,7 @@ venv/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Generated translation cache
+outputs/en_translation_cache.json
+outputs/tmp_site/

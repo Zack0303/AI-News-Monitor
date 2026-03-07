@@ -31,6 +31,10 @@ jobs:
             echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Validate target SHA exists
+        run: |
+          git rev-parse --verify "${{ steps.target.outputs.sha }}^{commit}" >/dev/null
+
       - name: Ensure CI checks passed for target SHA
         uses: actions/github-script@v7
         with:
@@ -56,10 +60,25 @@ jobs:
             }
             core.info(`CI passed for ${targetSha} via run #${passed.run_number}.`);
 
+      - name: Checkout target SHA
+        run: |
+          git checkout --detach "${{ steps.target.outputs.sha }}"
+          echo "Checked out $(git rev-parse --short HEAD)"
+
+      - name: Validate publish directory
+        run: |
+          if [ ! -d "site" ]; then
+            echo "site directory does not exist for target SHA."
+            exit 1
+          fi
+          if [ -z "$(find site -mindepth 1 -print -quit)" ]; then
+            echo "site directory is empty for target SHA."
+            exit 1
+          fi
+
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
           commit_message: "Publish static site from ${{ steps.target.outputs.sha }}"
-
