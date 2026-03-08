@@ -1,15 +1,18 @@
 # AI-News-Monitor
 
-面向中文技术受众的 AI 情报流水线（抓取 -> 分析 -> 选择 -> 发布）。
+English | [简体中文](./README.zh-CN.md)
 
-## 1. 核心能力
-- 自动抓取 RSS + GitHub 候选内容
-- Gemini 分析（批量+重试），失败自动回退 heuristic
-- 输出日报（JSON / Markdown / HTML）
-- 支持偏好学习：手动喜欢内容 + 页面点赞/点踩反馈
-- 英文站 V1：`/en` 最新日报（LLM 自动翻译 + 回退）
+AI-News-Monitor is an AI intelligence pipeline for technical audiences:
+ingest -> analyze -> select -> publish.
 
-## 2. 快速开始
+## Core capabilities
+- Ingest candidate items from RSS and GitHub.
+- Analyze with Gemini (batch + retry) and fallback to heuristic mode on failure.
+- Generate daily outputs in JSON, Markdown, and HTML.
+- Learn user preferences from manual likes and in-page feedback events.
+- Publish an English V1 page at `/en` with LLM translation and fallback.
+
+## Quick start
 ```powershell
 cd E:\VS_workplace\AI-News-Monitor
 python -m venv .venv
@@ -20,59 +23,56 @@ python -m pip install -r .\phase2_agent\requirements.txt
 Copy-Item .\phase1_rss\.env.example .\phase1_rss\.env
 ```
 
-运行日报（Gemini 模式）：
+Run daily digest (Gemini mode):
 ```powershell
 python .\phase1_rss\main.py --top-k 12 --max-rss-per-source 8 --github-limit 10
 ```
 
-构建静态站（中文 + 英文 `/en`）：
+Build static site (Chinese + English `/en`):
 ```powershell
 python .\scripts\build_static_site.py --top-k 12
 ```
 
-一键全流程：
+Run full pipeline:
 ```powershell
 .\scripts\run_all.ps1 -Mode llm -TopK 12 -SkipSync
 ```
 
-## 3. 英文翻译配置（V1）
-- 优先 OpenAI，再回退 Gemini
-- 至少配置其一：`OPENAI_API_KEY` 或 `GEMINI_API_KEY`
-- 可选：
-  - `OPENAI_TRANSLATE_MODEL`（默认 `gpt-4.1-mini`）
+## English translation config (V1)
+- Provider priority: OpenAI first, then Gemini.
+- Configure at least one key: `OPENAI_API_KEY` or `GEMINI_API_KEY`.
+- Optional:
+  - `OPENAI_TRANSLATE_MODEL` (default: `gpt-4.1-mini`)
   - `OPENAI_MODEL`
-  - `GEMINI_MODEL`（默认 `gemini-2.0-flash`）
+  - `GEMINI_MODEL` (default: `gemini-2.0-flash`)
 
-英文产物：
+Artifacts:
 - `site/en/index.html`
 - `site/data/en_latest.json`
-- 翻译缓存：`outputs/en_translation_cache.json`
+- Translation cache: `outputs/en_translation_cache.json`
 
-## 4. 偏好学习
-1. 手动添加你喜欢的内容：
+## Feedback and preference learning
+Add liked item:
 ```powershell
-python .\scripts\add_liked_item.py --url "https://github.com/org/repo" --title "Repo Name" --tags "agent,infra" --note "做得很扎实"
+python .\scripts\add_liked_item.py --url "https://github.com/org/repo" --title "Repo Name" --tags "agent,infra" --note "solid implementation"
 ```
 
-2. 从已有反馈生成画像（每日可跑）：
+Update preference profile:
 ```powershell
 python .\scripts\update_preference_profile.py
 ```
 
-3. 页面内反馈：
-- 卡片支持 `👍 喜欢` / `👎 不喜欢`
-- 页面支持导出反馈 JSON（`导出反馈 JSON` 按钮）
-- 导入导出的反馈：
+Import exported web feedback:
 ```powershell
 python .\scripts\import_web_feedback.py --input .\anm_feedback_export.json
 python .\scripts\update_preference_profile.py
 ```
 
-## 5. CI 与发布
-- CI：`push/PR -> master` 自动运行 `CI Checks`
-- 发布：`publish_site.yml` 手动触发（会校验 CI 通过，且发布指定 target SHA 对应的 `site/`）
+## CI and release
+- CI runs on push/PR to `master` via `CI Checks`.
+- Publishing runs via `publish_site.yml`, validates CI, and publishes the specified `target_sha`.
 
-## 6. 文档
+## Docs
 - `docs/ARCHITECTURE.md`
 - `docs/DEVELOPMENT_GUIDE.md`
 - `docs/FEEDBACK_TRAINING_GUIDE.md`
